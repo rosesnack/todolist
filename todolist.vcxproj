@@ -130,6 +130,7 @@
     <ClCompile Include="archive_module.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="task_module.cpp" />
+    <ClCompile Include="tools.cpp" />
     <ClCompile Include="user_module.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +138,7 @@
     <ClInclude Include="reminder_module.h" />
     <ClInclude Include="sync_module.h" />
     <ClInclude Include="task_module.h" />
+    <ClInclude Include="tools.h" />
     <ClInclude Include="user_module.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

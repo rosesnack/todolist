@@ -7,6 +7,7 @@
 #include "task_module.h"
 #include "sync_module.h"
 #include "archive_module.h"
+#include "tools.h"
 tm inputDate();
 
 class User {
@@ -42,6 +43,12 @@ public:
 
     // 从云端同步数据
     void syncFromCloud();
+
+    // 打印所有任务
+    void printAllTasks();
+
+    // 打印指定优先级的任务
+    void printTasksByPriority(Priority priority);
 };
 
 #endif // USER_MODULE_H

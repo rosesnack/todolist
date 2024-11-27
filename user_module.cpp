@@ -84,3 +84,60 @@ void User::syncToCloud() {
 void User::syncFromCloud() {
     syncService->syncFromCloud();
 }
+
+// 打印所有任务
+void User::printAllTasks() {
+    std::cout << "Task todo list:";
+    if (tasks.empty()) {
+        std::cout << "None" << std::endl;
+        return;
+    }
+
+    // 按 dueTime 排序，使用 lambda 表达式来比较任务的 dueTime
+    std::sort(tasks.begin(), tasks.end(), [](const Task& a, const Task& b) {
+        // 比较 dueTime 的年份、月份、日期等字段
+        if (a.dueTime.tm_year != b.dueTime.tm_year)
+            return a.dueTime.tm_year < b.dueTime.tm_year;
+        if (a.dueTime.tm_mon != b.dueTime.tm_mon)
+            return a.dueTime.tm_mon < b.dueTime.tm_mon;
+        if (a.dueTime.tm_mday != b.dueTime.tm_mday)
+            return a.dueTime.tm_mday < b.dueTime.tm_mday;
+        if (a.dueTime.tm_hour != b.dueTime.tm_hour)
+            return a.dueTime.tm_hour < b.dueTime.tm_hour;
+        return a.dueTime.tm_min < b.dueTime.tm_min;
+        });
+
+    std::cout << std::endl;
+    for (const Task& task : tasks) {
+        task.printTask();
+    }
+}
+
+// 打印指定优先级的任务
+void User::printTasksByPriority(Priority priority) {
+    std::cout << "Tasks with priority ";
+    switch (priority) {
+    case LOW:    std::cout << "LOW"; break;
+    case MEDIUM: std::cout << "MEDIUM"; break;
+    case HIGH:   std::cout << "HIGH"; break;
+    default:     std::cout << "UNKNOWN"; break;
+    }
+    std::cout << ":" << std::endl;
+
+    // 筛选出符合指定优先级的任务
+    std::vector<Task> filteredTasks;
+    for (const Task& task : tasks) {
+        if (task.priority == priority) {
+            filteredTasks.push_back(task);
+        }
+    }
+
+    if (filteredTasks.empty()) {
+        std::cout << "No tasks with this priority." << std::endl;
+    }
+    else {
+        for (const Task& task : filteredTasks) {
+            task.printTask();
+        }
+    }
+}

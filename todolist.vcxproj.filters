@@ -27,6 +27,9 @@
     <ClCompile Include="archive_module.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="tools.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user_module.h">
@@ -42,6 +45,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="sync_module.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tools.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,112 +4,10 @@
 #include "user_module.h"
 #include "task_module.h"
 #include "archive_module.h"
+#include "tools.h"
 
 using namespace std;
 
-// 帮助函数：获取当前时间
-tm getCurrentTime() {
-    time_t t = time(nullptr);
-    tm tm = *localtime(&t);
-    return tm;
-}
-
-// 帮助函数：输入日期
-tm inputDate() {
-    //cin.ignore();
-    tm date = {};
-    int year, month, day, hour, minute;
-    string input;
-
-    // 默认值
-    const int defaultYear = 2024;
-    const int defaultMonth = 12;
-    const int defaultDay = 15;
-    const int defaultHour = 18;
-    const int defaultMinute = 30;
-
-    // 输入年份
-    cout << "Enter year (default " << defaultYear << "): ";
-    getline(cin, input);
-    if (input.empty()) {
-        year = defaultYear;
-    }
-    else {
-        year = stoi(input);
-        while (year < 2024) {
-            cout << "Enter the correct year (>=2024): ";
-            getline(cin, input);
-            if (input.empty()) {
-                year = defaultYear;
-                break;
-            }
-            year = stoi(input);
-        }
-    }
-
-    // 输入月份
-    cout << "Enter month (default " << defaultMonth << "): ";
-    getline(cin, input);
-    if (input.empty()) {
-        month = defaultMonth;
-    }
-    else {
-        month = stoi(input);
-    }
-
-    // 输入日期
-    cout << "Enter day (default " << defaultDay << "): ";
-    getline(cin, input);
-    if (input.empty()) {
-        day = defaultDay;
-    }
-    else {
-        day = stoi(input);
-    }
-
-    // 输入小时
-    cout << "Enter hour (default " << defaultHour << "): ";
-    getline(cin, input);
-    if (input.empty()) {
-        hour = defaultHour;
-    }
-    else {
-        hour = stoi(input);
-    }
-
-    // 输入分钟
-    cout << "Enter minute (default " << defaultMinute << "): ";
-    getline(cin, input);
-    if (input.empty()) {
-        minute = defaultMinute;
-    }
-    else {
-        minute = stoi(input);
-    }
-
-    // 填充 tm 结构
-    date.tm_year = year - 1900; // tm_year是从1900年开始
-    date.tm_mon = month - 1;    // tm_mon是从0开始
-    date.tm_mday = day;
-    date.tm_hour = hour;
-    date.tm_min = minute;
-    date.tm_sec = 0;
-
-    return date;
-}
-
-
-void printAllTasks(User* user) {
-    cout << "Task todo list:";
-    if (user->tasks.empty()) {
-        cout << "None" << endl;
-        return;
-    }
-    cout << endl;
-    for (const Task& task : user->tasks) {
-        task.printTask();
-    }
-}
 
 int main() {
     int userID = 1;
@@ -121,18 +19,20 @@ int main() {
 
     while (running) {
         system("cls");
-        printAllTasks(&user);
+        user.printAllTasks();
+
         cout << "\n--- Task Management System ---\n";
         cout << "1. Add Task\n";
         cout << "2. Complete Task\n";
         cout << "3. Delete Task\n";
         cout << "4. View Task Detail\n";
         cout << "5. Extend Deadline\n";
-        cout << "6. Edit Task\n";
-        cout << "7. Sync To Cloud\n";
-        cout << "8. Sync From Cloud\n";
-        cout << "9. View Archived Tasks\n";
-        cout << "10. Exit\n";
+        cout << "6. Filter Priority\n";
+        cout << "7. Edit Task\n";
+        cout << "8. Sync To Cloud\n";
+        cout << "9. Sync From Cloud\n";
+        cout << "10. View Archived Tasks\n";
+        cout << "11. Exit\n";
         cout << "Choose an option: ";
 
         int choice;
@@ -140,7 +40,7 @@ int main() {
         cout << endl;
 
         switch (choice) {
-        case 1: {  //1. Add Task
+        case 1: {  // Add Task
             system("cls");
             cout << "Add Task\n";
 
@@ -194,7 +94,7 @@ int main() {
             break;
         }
 
-        case 2: {  // 2. Complete Task
+        case 2: {  // Complete Task
             cout << "Enter task ID to mark as complete: ";
             int id;
             cin >> id;
@@ -202,7 +102,7 @@ int main() {
             user.completeTask(id);
             break;
         }
-        case 3: {  // 3. Delete Task
+        case 3: {  // Delete Task
             cout << "Enter task ID to delete: ";
             int id;
             cin >> id;
@@ -210,7 +110,7 @@ int main() {
             user.deleteTask(id);
             break;
         }
-        case 4: {  // 4. View Task Detail
+        case 4: {  // View Task Detail
             cout << "Enter task ID to view detail: ";
             int id;
             cin >> id;
@@ -218,7 +118,7 @@ int main() {
             user.viewTaskDetail(id);
             break;
         }
-        case 5: {  // 5. Extend Deadline
+        case 5: {  // Extend Deadline
             cout << "Enter task ID to extend ddl: ";
             int id;
             cin >> id;
@@ -226,23 +126,30 @@ int main() {
             user.extendDeadline(id);
             break;
         }
-        case 6: {  // 6. Edit Task
+        case 6: {  // Filter Priority
+            cout << "Enter priority: 0:LOW 1:MEDIUM 2:HIGH: ";
+            int p;
+            cin >> p;
+            user.printTasksByPriority((Priority)p);
+            break;
+        }
+        case 7: {  // Edit Task
             cout << "此功能留待后续实现，现在可以删除任务后重新添加任务。\n";
             break;
         }
-        case 7: {  // 7. Sync To Cloud
+        case 8: {  // Sync To Cloud
             user.syncToCloud();
             break;
         }
-        case 8: {  // 8. Sync From Cloud
+        case 9: {  // Sync From Cloud
             user.syncFromCloud();
             break;
         }
-        case 9: {  // 9. View Archived Tasks
+        case 10: {  // View Archived Tasks
             user.archive->viewArchivedTasks();
             break;
         }
-        case 10: {  // 10. Exit
+        case 11: {  // Exit
             cout << "Exiting Task Management System.\n";
             running = false;
             break;
