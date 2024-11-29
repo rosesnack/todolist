@@ -3,27 +3,42 @@
 
 #include <ctime>
 #include <iostream>
+#include <queue>
+#include <string>
 
 // 提醒类
 class Reminder {
 public:
-    int reminderID;        // 提醒ID
+    int taskID;            // 任务ID
     std::tm remindTime;    // 提醒时间
+    std::tm dueTime;    // ddl
+    std::string taskname;  // 任务名称
 
-    Reminder() : reminderID(0), remindTime({ 0 }) {}
+    // 构造函数
+    Reminder(int id, std::string name, std::tm rt, std::tm dt);
 
-    void setReminder(int taskID, const std::tm& remindTime) {
-        this->reminderID = taskID;
-        this->remindTime = remindTime;
-    }
+    // 发送提醒通知
+    void sendNotification() const;
 
-    void sendNotification() {
-        //todo：在实际应用中根据系统时间发送通知
-        
-        // 假设提醒通过输出信息来实现
-        std::cout << "Reminder: Task ID " << reminderID << " is due at ";
-        std::cout << std::asctime(&remindTime);  // 输出提醒时间
-    }
+    // 重载小于运算符，用于优先队列排序（按时间先后顺序）
+    bool operator<(const Reminder& other) const;
+};
+
+class ReminderManager {
+public:
+    // 优先队列，按提醒时间排序
+    std::priority_queue<Reminder> reminders;
+
+    ReminderManager();
+
+    // 添加reminder
+    void addReminder(int id, std::string name, std::tm rt, std::tm dt);
+
+    // 检查是否有reminder到期并发送通知
+    void send_notifications();
+
+    // 根据任务ID删除指定提醒
+    void removeReminder(int taskID);
 };
 
 #endif // REMINDER_MODULE_H

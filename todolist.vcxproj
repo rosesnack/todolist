@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="archive_module.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="reminder_module.cpp" />
     <ClCompile Include="task_module.cpp" />
     <ClCompile Include="tools.cpp" />
     <ClCompile Include="user_module.cpp" />

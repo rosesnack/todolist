@@ -50,15 +50,11 @@ public:
     Priority priority;        // 任务优先级
     TaskCategory category;    // 任务分类
     bool isCompleted;         // 任务是否完成
-    Reminder reminder;        // 提醒类对象
 
     Task(int id, const std::string& taskName, const std::string& taskDesc, 
         const std::tm& due, const std::tm& remind, Priority p, Color c);
 
-    void setReminder(const std::tm& remindTime);
     void markCompleted();
-    void setReminderTime(const std::tm& time); // 用于设置任务提醒时间
-    void sendReminder(); // 用于发送任务提醒
     void printTask() const;  //用于打印任务的简略信息
     void printTaskDetail() const;  //用于打印任务的详细信息
 };

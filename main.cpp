@@ -19,6 +19,10 @@ int main() {
 
     while (running) {
         system("cls");
+        std::time_t now = std::time(nullptr);
+        cout << "now£º" << asctime(localtime(&now));
+
+        user.reminderManager->send_notifications();
         user.printAllTasks();
 
         cout << "\n--- Task Management System ---\n";

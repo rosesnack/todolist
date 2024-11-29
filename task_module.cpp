@@ -6,32 +6,12 @@ Task::Task(int id, const std::string& taskName, const std::string& taskDesc, con
     const std::tm& remind, Priority p, Color c)
     : taskID(id), name(taskName), description(taskDesc), dueTime(due), remindTime(remind), 
     priority(p), isCompleted(false), category(c) {
-    reminder.setReminder(taskID, remindTime);  // 初始化提醒
-}
-
-// 设置提醒时间
-void Task::setReminder(const std::tm& remindTime) {
-    this->remindTime = remindTime;
-    reminder.setReminder(taskID, remindTime); // 使用 Reminder 类设置提醒
 }
 
 // 完成任务
 void Task::markCompleted() {
     isCompleted = true;
     std::cout << "Task completed: " << name << std::endl;
-}
-
-// 设置任务提醒时间
-void Task::setReminderTime(const std::tm& time) {
-    remindTime = time;
-    reminder.setReminder(taskID, remindTime); // 通过 Reminder 类来设置提醒
-}
-
-// 发送任务提醒
-void Task::sendReminder() {
-    if (!isCompleted) {
-        reminder.sendNotification(); // 调用 Reminder 类的发送通知方法
-    }
 }
 
 // 打印任务的简略信息

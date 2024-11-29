@@ -4,11 +4,14 @@
 #include <algorithm>
 
 // 用户类构造函数
-User::User(int id, const std::string& name) : userID(id), username(name), archive(std::make_unique<Archive>(id)), syncService(std::make_unique<SyncService>(id)) {}
+User::User(int id, const std::string& name) : userID(id), username(name), 
+archive(std::make_unique<Archive>(id)), syncService(std::make_unique<SyncService>(id)),
+reminderManager(std::make_unique<ReminderManager>()){}
 
 // 添加任务
 void User::addTask(Task task) {
     tasks.push_back(task);
+    reminderManager->addReminder(task.taskID, task.name, task.remindTime, task.dueTime);
     std::cout << "Task added: " << task.name << std::endl;
 }
 
@@ -20,6 +23,7 @@ void User::completeTask(int taskID) {
         it->markCompleted();
         archive->archiveCompletedTask(*it);
         tasks.erase(it);
+        reminderManager->removeReminder(taskID);
     }
     else {
         std::cout << "Task with ID " << taskID << " not found." << std::endl;
@@ -45,6 +49,7 @@ void User::deleteTask(int taskID) {
     if (it != tasks.end()) {
         tasks.erase(it);
         std::cout << "Task deleted: " << taskID << std::endl;
+        reminderManager->removeReminder(taskID);
     }
     else {
         std::cout << "Task with ID " << taskID << " not found." << std::endl;
